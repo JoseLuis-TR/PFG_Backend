@@ -2,10 +2,8 @@ package com.backend.pfg_haven.controller;
 
 import com.backend.pfg_haven.dto.pelicula.PeliculaPostDTO;
 import com.backend.pfg_haven.model.Pelicula;
-import com.backend.pfg_haven.repository.PeliculaRepository;
 import com.backend.pfg_haven.services.PeliculaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,5 +50,16 @@ public class PeliculaController {
     @PostMapping("/peliculas")
     public Pelicula addPeliculaAPI(@RequestBody PeliculaPostDTO newPelicula){
         return peliculaService.addPeliculaAPI(newPelicula);
+    }
+
+    /**
+     * Se elimina una pelicula por su id
+     *
+     * @param idPelicula Id de la pelicula
+     * @return Pelicula eliminada
+     */
+    @DeleteMapping("/peliculas/{idPelicula}")
+    public Pelicula deletePeliculaById(@PathVariable Long idPelicula) {
+        return peliculaService.deletePeliculaById(idPelicula);
     }
 }

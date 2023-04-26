@@ -39,6 +39,18 @@ public class PeliculaService {
     }
 
     /**
+     * Se elimina una pelicula por su id
+     *
+     * @param id Id de la película
+     * @return Película eliminada
+     */
+    public Pelicula deletePeliculaById(Long id) {
+        Pelicula pelicula = peliculaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encuentra le pelicula que quiere eliminar"));
+        peliculaRepository.deleteById(id);
+        return pelicula;
+    }
+
+    /**
      * Se crea una nueva pelicula en la base de datos
      *
      * @param newPelicula Pelicula a añadir
