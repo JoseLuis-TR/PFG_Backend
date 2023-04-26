@@ -1,6 +1,7 @@
 package com.backend.pfg_haven.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +31,6 @@ public class Asiento {
     private Integer numero;
 
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name="id_sala")
     @JsonBackReference
     private Sala sala;

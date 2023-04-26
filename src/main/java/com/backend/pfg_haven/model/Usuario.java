@@ -32,6 +32,9 @@ public class Usuario {
     @Column(name = "avatar", length = 255)
     private String avatar;
 
+    @Column(name = "rol", length = 45, nullable = false)
+    private String rol;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comentario> comentarios;

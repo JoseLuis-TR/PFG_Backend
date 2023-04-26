@@ -1,0 +1,17 @@
+package com.backend.pfg_haven.dto.pelicula;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class PeliculaCarteleraDTO {
+
+    private Long id;
+
+    private String nombre;
+
+    private String poster;
+
+    private String captura;
+}
