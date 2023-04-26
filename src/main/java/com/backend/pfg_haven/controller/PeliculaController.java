@@ -1,14 +1,12 @@
 package com.backend.pfg_haven.controller;
 
+import com.backend.pfg_haven.dto.pelicula.PeliculaPostDTO;
 import com.backend.pfg_haven.model.Pelicula;
 import com.backend.pfg_haven.repository.PeliculaRepository;
 import com.backend.pfg_haven.services.PeliculaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,7 +42,15 @@ public class PeliculaController {
      * a los que se le añade una imagen y se guarda en la base de datos utilizando
      * el metodo POST
      */
-    @PostMapping(value = "/peliculas", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    //@PostMapping(value = "/peliculas", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 
-
+    /**
+     * Se añade una nueva pelicula a la base de datos recibiendo los datos
+     * que se recogen de la llamada a la API de TMDB
+     * Devuelve el codigo HTTP de creacion y la pelicula
+     */
+    @PostMapping("/peliculas")
+    public Pelicula addPeliculaAPI(@RequestBody PeliculaPostDTO newPelicula){
+        return peliculaService.addPeliculaAPI(newPelicula);
+    }
 }

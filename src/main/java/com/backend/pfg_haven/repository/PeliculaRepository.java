@@ -5,7 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PeliculaRepository extends JpaRepository<Pelicula, Long> {
 
-    /**
-     * Obtenemos una pelicula por su id
-     */
+    Pelicula findByNombre(String titulo);
 }
