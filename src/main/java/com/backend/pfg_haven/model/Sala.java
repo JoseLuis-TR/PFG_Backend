@@ -1,5 +1,6 @@
 package com.backend.pfg_haven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,8 +24,8 @@ public class Sala {
     @Column(name = "nombre", length = 20, nullable = false, unique = true)
     private String nombre;
 
-    @Column(name = "numAsientos", nullable = false)
-    private Integer numAsientos;
+    @Column(name = "num_asientos", nullable = false)
+    private Integer num_asientos;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, orphanRemoval = true)

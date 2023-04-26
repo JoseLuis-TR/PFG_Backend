@@ -2,17 +2,15 @@ package com.backend.pfg_haven.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,7 +19,6 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "Sesion")
-@TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Sesion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,11 +29,10 @@ public class Sesion implements Serializable {
     private Long id;
 
     @Column(name = "fecha", nullable = false)
-    private LocalDateTime fecha;
+    private LocalDate fecha;
 
-    @Type(type = "json")
-    @Column(name = "horas", nullable = false)
-    private List<String> horas;
+    @Column(name = "horas", nullable = false, length = 150)
+    private String horas;
 
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
