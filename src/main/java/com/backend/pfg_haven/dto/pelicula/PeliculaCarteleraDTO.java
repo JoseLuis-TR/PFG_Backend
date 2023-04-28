@@ -11,7 +11,15 @@ public class PeliculaCarteleraDTO {
 
     private String nombre;
 
+    private String director;
+
+    private Integer duracion;
+
+    private String trailer;
+
     private String poster;
 
     private String captura;
+
+    private String sinopsis;
 }

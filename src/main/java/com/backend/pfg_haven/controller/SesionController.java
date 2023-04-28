@@ -5,7 +5,6 @@ import com.backend.pfg_haven.dto.sala.SalaDTO;
 import com.backend.pfg_haven.dto.sesion.SesionDTO;
 import com.backend.pfg_haven.dto.sesion.SesionDTOConverter;
 import com.backend.pfg_haven.model.Sesion;
-import com.backend.pfg_haven.repository.PeliculaRepository;
 import com.backend.pfg_haven.services.SesionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
