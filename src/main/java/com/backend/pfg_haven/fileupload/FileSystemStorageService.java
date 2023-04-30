@@ -39,9 +39,6 @@ public class FileSystemStorageService implements StorageService {
             if(filename.contains("..")){
                 throw new StorageException("No se aceptan rutas relativas fuera del directorio actual para " + filename);
             }
-            //System.out.println("Guardando archivo: " + storedFilename);
-            //System.out.println("Ruta: " + this.rootLocation.resolve(storedFilename));
-            //System.out.println(file.getInputStream());
             Path path = this.rootLocation.resolve(storedFilename);
             System.out.println( Files.isReadable(path));
             try (InputStream inputStream = file.getInputStream()) {

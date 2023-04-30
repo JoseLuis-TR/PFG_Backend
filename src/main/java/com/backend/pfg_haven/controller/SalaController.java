@@ -1,7 +1,6 @@
 package com.backend.pfg_haven.controller;
 
 import com.backend.pfg_haven.model.Sala;
-import com.backend.pfg_haven.repository.SalaRepository;
 import com.backend.pfg_haven.services.SalaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

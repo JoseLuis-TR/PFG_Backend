@@ -3,7 +3,6 @@ package com.backend.pfg_haven.controller;
 import com.backend.pfg_haven.dto.pelicula.PeliculaCarteleraDTO;
 import com.backend.pfg_haven.dto.pelicula.PeliculaDTOConverter;
 import com.backend.pfg_haven.dto.pelicula.PeliculaPostDTO;
-import com.backend.pfg_haven.exception.MissingFilesException;
 import com.backend.pfg_haven.fileupload.StorageService;
 import com.backend.pfg_haven.model.Pelicula;
 import com.backend.pfg_haven.services.PeliculaService;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +38,7 @@ public class PeliculaController {
     /**
      * Obtenemos una pelicula por su ID
      *
-     * @param id Identificador de la pelicula
+     * @param idPelicula Identificador de la pelicula
      * @return Pelicula o error 404 si no encuentra la pelicula
      */
     @GetMapping("/peliculas/{idPelicula}")
@@ -58,13 +56,6 @@ public class PeliculaController {
     public Pelicula deletePeliculaById(@PathVariable Long idPelicula) {
         return peliculaService.deletePeliculaById(idPelicula);
     }
-
-    /**
-     * Añadimos una nueva nueva pelicula recibiendo datos de un formulario
-     * a los que se le añade una imagen y se guarda en la base de datos utilizando
-     * el metodo POST
-     */
-    //@PostMapping(value = "/peliculas", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 
     /**
      * Se añade una nueva pelicula a la base de datos recibiendo los datos
@@ -89,22 +80,23 @@ public class PeliculaController {
     public Pelicula addPelicula(@RequestPart("nuevaPelicula") PeliculaPostDTO newPelicula,
                                 @RequestPart("poster") MultipartFile poster,
                                 @RequestPart("captura") MultipartFile captura) {
-        String urlPoster = null;
-        String urlCaptura = null;
+        return peliculaService.addPeliculaWithFiles(newPelicula, poster, captura);
+    }
 
-        if (!poster.isEmpty() && !captura.isEmpty()){
-            String posterSubido = storageService.store(poster);
-            urlPoster = MvcUriComponentsBuilder
-                    .fromMethodName(FicherosController.class, "serveFile", posterSubido, null)
-                    .build().toUriString();
-            String capturaSubida = storageService.store(captura);
-            urlCaptura = MvcUriComponentsBuilder
-                    .fromMethodName(FicherosController.class, "serveFile", capturaSubida, null)
-                    .build().toUriString();
-        } else {
-            throw new MissingFilesException("Se deben subir los dos archivos");
-        }
-
-        return peliculaService.addPeliculaWithFiles(newPelicula, urlPoster, urlCaptura);
+    /**
+     * Se actualiza una pelicula por su id
+     *
+     * @param peliculaToUpdate Id de la pelicula a actualizar
+     * @param peliculaToUpdate Nuevos datos de la pelicula
+     * @param posterToUpdate Poster de la pelicula
+     * @param capturaToUpdate Captura de la pelicula
+     * @return Pelicula actualizada
+     */
+    @PutMapping(value = "/peliculas/{idPeliculaToUpdate}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Pelicula updatePelicula(@PathVariable Long idPeliculaToUpdate,
+                                   @RequestPart("peliculaToUpdate") PeliculaPostDTO peliculaToUpdate,
+                                   @RequestPart(value = "posterToUpdate", required = false) MultipartFile posterToUpdate,
+                                   @RequestPart(value = "capturaToUpdate", required = false) MultipartFile capturaToUpdate) {
+        return peliculaService.updatePelicula(idPeliculaToUpdate, peliculaToUpdate, posterToUpdate, capturaToUpdate);
     }
 }

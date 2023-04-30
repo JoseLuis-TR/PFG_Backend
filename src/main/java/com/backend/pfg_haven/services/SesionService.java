@@ -30,8 +30,7 @@ public class SesionService {
         if(sesionesHoy.isEmpty()) {
             throw new ResourceNotFoundException("No hay sesiones hoy");
         } else {
-            HashMap<Sesion, HashMap<String, Object>> relacionSesionPelicula = convertToCarteleraDTO(sesionesHoy);
-            return relacionSesionPelicula;
+            return convertToCarteleraDTO(sesionesHoy);
         }
     }
 
@@ -45,8 +44,7 @@ public class SesionService {
         if(sesionesDesdeHoy.isEmpty()) {
             throw new ResourceNotFoundException("No hay sesiones a partir de hoy");
         } else {
-            HashMap<Sesion, HashMap<String, Object>> relacionSesionDesdeHoyPelicula = convertToCarteleraDTO(sesionesDesdeHoy);
-            return relacionSesionDesdeHoyPelicula;
+            return convertToCarteleraDTO(sesionesDesdeHoy);
         }
     }
 
@@ -63,7 +61,7 @@ public class SesionService {
         sesiones.forEach((sesion) -> {
             PeliculaCarteleraDTO peliculaCartelera = peliculaConverter.convertToCarteleraDTO(sesion.getPelicula());
             SalaDTO infoSala = salaConverter.convertToDTO(sesion.getSala());
-            HashMap<String, Object> infoPeliculaSala = new HashMap<String, Object>() {{
+            HashMap<String, Object> infoPeliculaSala = new HashMap<>() {{
                 put("pelicula", peliculaCartelera);
                 put("sala", infoSala);
             }};
