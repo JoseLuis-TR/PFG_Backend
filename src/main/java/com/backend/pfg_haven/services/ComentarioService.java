@@ -67,7 +67,6 @@ public class ComentarioService {
      * @return comentario añadido
      */
     public Comentario addComentario(ComentarioPostDTO newComentario) {
-        System.out.println("Comentario: " + newComentario.getTexto());
         Optional<Usuario> usuariosExists = usuarioRepository.findById(newComentario.getId_usuario());
         Optional<Pelicula> peliculaExists = peliculaRepository.findById(newComentario.getId_pelicula());
         if(usuariosExists.isEmpty() || peliculaExists.isEmpty()) {
