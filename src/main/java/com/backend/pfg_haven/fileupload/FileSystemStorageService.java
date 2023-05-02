@@ -40,7 +40,6 @@ public class FileSystemStorageService implements StorageService {
                 throw new StorageException("No se aceptan rutas relativas fuera del directorio actual para " + filename);
             }
             Path path = this.rootLocation.resolve(storedFilename);
-            System.out.println( Files.isReadable(path));
             try (InputStream inputStream = file.getInputStream()) {
                 if (inputStream == null || inputStream.available() == 0) {
                     throw new StorageException("El archivo está vacío");

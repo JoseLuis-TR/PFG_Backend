@@ -1,9 +1,6 @@
 package com.backend.pfg_haven.controller;
 
-import com.backend.pfg_haven.dto.pelicula.PeliculaCarteleraDTO;
-import com.backend.pfg_haven.dto.pelicula.PeliculaDTOConverter;
 import com.backend.pfg_haven.dto.pelicula.PeliculaPostDTO;
-import com.backend.pfg_haven.fileupload.StorageService;
 import com.backend.pfg_haven.model.Pelicula;
 import com.backend.pfg_haven.services.PeliculaService;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,19 +16,14 @@ public class PeliculaController {
 
     private final PeliculaService peliculaService;
 
-    private final StorageService storageService;
-
     /**
-     * Obtenemos todas las peliculas
+     * Obtenemos lista de todas las peliculas
      *
      * @return Lista de peliculas en cartelera
      */
-    @GetMapping("/peliculas")
-    public List<PeliculaCarteleraDTO> getAllPeliculas() {
-        List<Pelicula> listaPeliculas = peliculaService.getAllPeliculas();
-        PeliculaDTOConverter peliculaDTOConverter = new PeliculaDTOConverter();
-        List<PeliculaCarteleraDTO> listaPeliculasDTO = listaPeliculas.stream().map(peliculaDTOConverter::convertToCarteleraDTO).collect(Collectors.toList());
-        return listaPeliculasDTO;
+    @GetMapping("/peliculas/page/{nPage}")
+    public Map<String, Object> getAllPeliculas(@PathVariable int nPage) {
+        return peliculaService.getAllPeliculas(nPage);
     }
 
     /**

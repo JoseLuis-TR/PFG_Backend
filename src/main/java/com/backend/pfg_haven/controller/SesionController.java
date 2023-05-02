@@ -29,8 +29,7 @@ public class SesionController {
     @GetMapping("/sesiones/hoy")
     public List<SesionDTO> getTodaySessions() {
         HashMap<Sesion, HashMap<String, Object>> relacionSesionPelicula = sesionService.getTodaySessions();
-        List<SesionDTO> sesionesHoyDTO = convertSesionesDTO(relacionSesionPelicula);
-        return sesionesHoyDTO;
+        return convertSesionesDTO(relacionSesionPelicula);
     }
 
     /**
@@ -41,8 +40,7 @@ public class SesionController {
     @GetMapping("/sesiones/desdeHoy")
     public List<SesionDTO> getSessionsAfterToday() {
         HashMap<Sesion, HashMap<String, Object>> relacionSesionesDesdeHoyPelicula = sesionService.getSessionsAfterToday();
-        List<SesionDTO> sesionesDesdeHoy = convertSesionesDTO(relacionSesionesDesdeHoyPelicula);
-        return sesionesDesdeHoy;
+        return convertSesionesDTO(relacionSesionesDesdeHoyPelicula);
     }
 
     private List<SesionDTO> convertSesionesDTO(HashMap<Sesion, HashMap<String, Object>> relacionSesionPelicula) {

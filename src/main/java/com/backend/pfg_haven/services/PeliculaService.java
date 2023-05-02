@@ -1,6 +1,8 @@
 package com.backend.pfg_haven.services;
 
 import com.backend.pfg_haven.controller.FicherosController;
+import com.backend.pfg_haven.dto.pelicula.PeliculaCarteleraDTO;
+import com.backend.pfg_haven.dto.pelicula.PeliculaDTOConverter;
 import com.backend.pfg_haven.dto.pelicula.PeliculaPostDTO;
 import com.backend.pfg_haven.exception.MissingFilesException;
 import com.backend.pfg_haven.fileupload.StorageService;
@@ -8,14 +10,20 @@ import com.backend.pfg_haven.model.Pelicula;
 import com.backend.pfg_haven.repository.PeliculaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.persistence.EntityExistsException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +35,27 @@ public class PeliculaService {
     private final StorageService storageService;
 
     /**
-     * Se obtienen todas las películas del catálogo
+     * Se obtienen todas las películas del catálogo por página y ordenadas por nombre
      *
      * @return Lista de películas
      */
-    public List<Pelicula> getAllPeliculas() {
-        return new ArrayList<>(peliculaRepository.findAll());
+    public Map<String, Object> getAllPeliculas(int nPage){
+        // Creamos el parámetro de búsqueda por la página que recibimos en la petición
+        // TODO - Modificar el tamaño de la página
+        Pageable parametrosPagina = PageRequest.of(nPage,10, Sort.by("nombre").ascending());
+        Page<Pelicula> listaPeliculas = peliculaRepository.findAll(parametrosPagina);
+        // Convertimos la lista de peliculas al correspondiente DTO
+        PeliculaDTOConverter peliculaDTOConverter = new PeliculaDTOConverter();
+        List<PeliculaCarteleraDTO> listaPeliculasDTO = listaPeliculas.getContent().stream()
+                .map(peliculaDTOConverter::convertToCarteleraDTO)
+                .collect(Collectors.toList());
+        // Creamos el objeto de respuesta paginada
+        Map<String, Object> paginatedResponse = new HashMap<>();
+        paginatedResponse.put("peliculas", listaPeliculasDTO);
+        paginatedResponse.put("currentPage", listaPeliculas.getNumber());
+        paginatedResponse.put("totalItems", listaPeliculas.getTotalElements());
+        paginatedResponse.put("totalPages", listaPeliculas.getTotalPages());
+        return paginatedResponse;
     }
 
     /**
@@ -52,9 +75,7 @@ public class PeliculaService {
      * @return Película eliminada
      */
     public Pelicula deletePeliculaById(Long id) {
-        System.out.println("Id de la pelicula a eliminar: " + id);
         Pelicula pelicula = peliculaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encuentra le pelicula que quiere eliminar"));
-        System.out.println("Pelicula a eliminar: " + pelicula);
         peliculaRepository.deleteById(id);
         return pelicula;
     }
@@ -144,9 +165,7 @@ public class PeliculaService {
         String urlPoster = null;
         String urlCaptura = null;
 
-        System.out.println("Poster a actualizar: " + posterToUpdate);
         if(posterToUpdate != null && !posterToUpdate.isEmpty()) {
-            System.out.println("Poster a actualizar: " + posterToUpdate);
             String posterSubido = storageService.store(posterToUpdate);
             urlPoster = MvcUriComponentsBuilder
                     .fromMethodName(FicherosController.class, "serveFile", posterSubido, null)
@@ -159,11 +178,11 @@ public class PeliculaService {
                     .build().toUriString();
         }
 
-    	pelicula.setNombre(peliculaToUpdate.getNombre());
-    	pelicula.setDirector(peliculaToUpdate.getDirector());
-    	pelicula.setDuracion(peliculaToUpdate.getDuracion());
-    	pelicula.setTrailer(peliculaToUpdate.getTrailer());
-    	pelicula.setSinopsis(peliculaToUpdate.getSinopsis());
+    	pelicula.setNombre(peliculaToUpdate.getNombre() != null ? peliculaToUpdate.getNombre() : pelicula.getNombre());
+    	pelicula.setDirector(peliculaToUpdate.getDirector() != null ? peliculaToUpdate.getDirector() : pelicula.getDirector());
+    	pelicula.setDuracion(peliculaToUpdate.getDuracion() != null ? peliculaToUpdate.getDuracion() : pelicula.getDuracion());
+    	pelicula.setTrailer(peliculaToUpdate.getTrailer() != null ? peliculaToUpdate.getTrailer() : pelicula.getTrailer());
+    	pelicula.setSinopsis(peliculaToUpdate.getSinopsis() != null ? peliculaToUpdate.getSinopsis() : pelicula.getSinopsis());
         // Comprobamos si se ha subido un nuevo poster o captura
         // y en caso de ser así, comprobamos si el poster o la captura
         // esta alojado en el servidor, en caso de estarlo lo borramos
