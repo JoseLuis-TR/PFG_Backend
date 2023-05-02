@@ -1,6 +1,7 @@
 package com.backend.pfg_haven.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class Comentario {
     private String texto;
 
     @Column(name = "fecha", nullable = false)
-    private LocalDateTime fecha;
+    private String fecha;
 
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)

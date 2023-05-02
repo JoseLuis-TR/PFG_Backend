@@ -1,24 +1,58 @@
 package com.backend.pfg_haven.controller;
 
+import com.backend.pfg_haven.dto.comentario.ComentarioPostDTO;
 import com.backend.pfg_haven.model.Comentario;
 import com.backend.pfg_haven.repository.ComentarioRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.backend.pfg_haven.services.ComentarioService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class ComentarioController {
 
-    ComentarioRepository comentarioRepository;
+    private final ComentarioRepository comentarioRepository;
+
+    private final ComentarioService comentarioService;
 
     /**
-     * Obtenemos los comentarios más recientes de toda la web
-     *
-     * @return lista de comentarios
+     * Obtenemos todos los comentarios de una película
      */
-    @GetMapping("/comentarios/recientes")
-    public List<Comentario> getComentariosRecientes() {
-        return comentarioRepository.findAllByOrderByFechaDesc();
+    @GetMapping("/comentarios")
+    public List<Comentario> getComentariosPelicula() {
+        return comentarioRepository.findAll();
+    }
+
+    /**
+     * Obtenemos todos los comentarios de una película paginados
+     */
+    @GetMapping("/comentarios/pelicula/{idPelicula}/paginado/{nPage}")
+    public Map<String, Object> getComentariosPelicula(@PathVariable Long idPelicula, @PathVariable int nPage) {
+        return comentarioService.getComentariosPelicula(idPelicula, nPage);
+    }
+
+    /**
+     * Eliminamos un comentario usando su id
+     *
+     * @param idComentario id del comentario a eliminar
+     * @return comentario eliminado
+     */
+    @DeleteMapping("/comentarios/{idComentario}")
+    public Comentario deleteComentario(@PathVariable Long idComentario) {
+        return comentarioService.deleteComentario(idComentario);
+    }
+
+    /**
+     * Añadimos un nuevo comentario
+     *
+     * @param newComentario comentario a añadir
+     * @return comentario añadido
+     */
+    @PostMapping("/comentarios")
+    public Comentario addComentario(@RequestBody ComentarioPostDTO newComentario) {
+        return comentarioService.addComentario(newComentario);
     }
 }

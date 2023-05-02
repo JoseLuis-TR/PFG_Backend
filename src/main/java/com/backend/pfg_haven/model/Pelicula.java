@@ -41,10 +41,11 @@ public class Pelicula {
     private String sinopsis;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pelicula", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comentario> comentarios;
+    @OneToMany(mappedBy = "pelicula", cascade = CascadeType.ALL)
+    private List<Sesion> sesiones;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pelicula", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Sesion> sesiones;
+    @OneToMany(mappedBy = "pelicula", cascade = CascadeType.ALL)
+    private List<Comentario> comentarios;
+
 }
