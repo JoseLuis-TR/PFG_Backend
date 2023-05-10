@@ -4,11 +4,12 @@ import com.backend.pfg_haven.dto.pelicula.PeliculaCarteleraDTO;
 import com.backend.pfg_haven.dto.sala.SalaDTO;
 import com.backend.pfg_haven.dto.sesion.SesionDTO;
 import com.backend.pfg_haven.dto.sesion.SesionDTOConverter;
+import com.backend.pfg_haven.dto.sesion.SesionPostDTO;
 import com.backend.pfg_haven.model.Sesion;
 import com.backend.pfg_haven.services.SesionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +44,33 @@ public class SesionController {
         return convertSesionesDTO(relacionSesionesDesdeHoyPelicula);
     }
 
+    /**
+     * Obtenemos todas las sesiones a partir de hoy de una pelicula en especifico
+     *
+     * @param idPelicula ID de la pelicula
+     * @return Lista de las sesiones
+     */
+    @GetMapping("/sesiones/desdeHoy/pelicula")
+    public List<SesionDTO> getSessionsAfterTodayByPelicula(@RequestParam Long idPelicula) {
+        HashMap<Sesion, HashMap<String, Object>> relacionSesionesDesdeHoyPelicula = sesionService.getSessionsAfterToday();
+        HashMap<Sesion, HashMap<String, Object>> sesionesDesdeHoyPelicula = relacionSesionesDesdeHoyPelicula
+                                                                                    .entrySet()
+                                                                                    .stream()
+                                                                                    .filter(entry -> {
+                                                                                        HashMap<String, Object> infoSesion = entry.getValue();
+                                                                                        PeliculaCarteleraDTO peliculaCarteleraDTO = (PeliculaCarteleraDTO) infoSesion.get("pelicula");
+                                                                                        return peliculaCarteleraDTO.getId().equals(idPelicula);
+                                                                                    })
+                                                                                    .collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), HashMap::putAll);
+        if(sesionesDesdeHoyPelicula.isEmpty()) throw new ResourceNotFoundException("No hay sesiones para la pelicula con id: " + idPelicula);
+        return convertSesionesDTO(sesionesDesdeHoyPelicula);
+    }
+
+    /**
+     * Obtenemos la lista de sesiones que enviemos convertida a su correspondiente DTO
+     * @param relacionSesionPelicula Hashmap con la relacion de sesion y pelicula
+     * @return Lista de sesiones convertidas a DTO
+     */
     private List<SesionDTO> convertSesionesDTO(HashMap<Sesion, HashMap<String, Object>> relacionSesionPelicula) {
         SesionDTOConverter sesionConverter = new SesionDTOConverter();
         List<SesionDTO> sesionesDTO = new ArrayList<>();
@@ -54,4 +82,38 @@ public class SesionController {
         });
         return sesionesDTO;
     }
+
+    /**
+     * Obtenemos todos los asientos ya reservados para una sesión
+     *
+     * @param idSesion Id de la sesión
+     * @return Lista de asientos reservados
+     */
+    @GetMapping("/sesiones/{idSesion}/asientos")
+    public List<Long> getReservedSeatsBySesionId(Long idSesion) {
+        return sesionService.getReservedSeatsBySesionId(idSesion);
+    }
+
+    /**
+     * Creamos una nueva sesión
+     *
+     * @param newSesion Sesion a crear
+     * @return Sesion creada
+     */
+    @PostMapping("/sesiones")
+    public Sesion createSesion(@RequestBody SesionPostDTO newSesion) {
+        return sesionService.createSesion(newSesion);
+    }
+
+    /**
+     * Eliminamos una sesión
+     *
+     * @param idSesion Id de la sesión
+     * @return Sesion eliminada
+     */
+    @DeleteMapping("/sesiones")
+    public Sesion deleteSesion(@RequestParam Long idSesion) {
+        return sesionService.deleteSesion(idSesion);
+    }
+
 }

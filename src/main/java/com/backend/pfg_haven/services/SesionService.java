@@ -4,13 +4,15 @@ import com.backend.pfg_haven.dto.pelicula.PeliculaCarteleraDTO;
 import com.backend.pfg_haven.dto.pelicula.PeliculaDTOConverter;
 import com.backend.pfg_haven.dto.sala.SalaDTO;
 import com.backend.pfg_haven.dto.sala.SalaDTOConverter;
-import com.backend.pfg_haven.model.Sesion;
-import com.backend.pfg_haven.repository.SesionRepository;
+import com.backend.pfg_haven.dto.sesion.SesionPostDTO;
+import com.backend.pfg_haven.model.*;
+import com.backend.pfg_haven.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,6 +21,17 @@ public class SesionService {
 
     @Autowired
     private SesionRepository sesionRepository;
+
+    @Autowired
+    private ReservaRepository reservaRepository;
+    @Autowired
+    private ReservaTieneAsientoRepository reservaTieneAsientoRepository;
+
+    @Autowired
+    private PeliculaRepository peliculaRepository;
+
+    @Autowired
+    private SalaRepository salaRepository;
 
     /**
      * Obtenemos todas las sesiones de hoy
@@ -29,9 +42,8 @@ public class SesionService {
         List<Sesion> sesionesHoy = sesionRepository.findByFechaEquals(LocalDate.now());
         if(sesionesHoy.isEmpty()) {
             throw new ResourceNotFoundException("No hay sesiones hoy");
-        } else {
-            return convertToCarteleraDTO(sesionesHoy);
         }
+        return convertToCarteleraDTO(sesionesHoy);
     }
 
     /**
@@ -40,12 +52,11 @@ public class SesionService {
      * @return Lista de las sesiones a partir de hoy
      */
     public HashMap<Sesion, HashMap<String, Object>> getSessionsAfterToday() {
-        List<Sesion> sesionesDesdeHoy = sesionRepository.findByFechaGreaterThanEqualOrderByFechaAsc(LocalDate.now());
+        List<Sesion> sesionesDesdeHoy = sesionRepository.findByFechaGreaterThanEqual(LocalDate.now());
         if(sesionesDesdeHoy.isEmpty()) {
             throw new ResourceNotFoundException("No hay sesiones a partir de hoy");
-        } else {
-            return convertToCarteleraDTO(sesionesDesdeHoy);
         }
+        return convertToCarteleraDTO(sesionesDesdeHoy);
     }
 
     /**
@@ -68,5 +79,59 @@ public class SesionService {
             relacionSesionPelicula.put(sesion, infoPeliculaSala);
         });
         return relacionSesionPelicula;
+    }
+
+    /**
+     * Obtenemos una lista de asientos reservados para una sesión
+     *
+     * @param idSesion
+     * @return Lista de asientos reservados
+     */
+    public List<Long> getReservedSeatsBySesionId(Long idSesion){
+        List<Reserva> reservas = reservaRepository.findBySesionId(idSesion);
+        if(reservas.isEmpty()) throw new ResourceNotFoundException("No hay reservas para esta sesión");
+
+        List<Long> idAsientosReservados = new ArrayList<>();
+        for(Reserva reserva : reservas){
+            List<ReservaTieneAsiento> asientosEnReserva = reservaTieneAsientoRepository.findAllByReservaId(reserva.getId());
+
+            asientosEnReserva.forEach((asiento) -> {
+                idAsientosReservados.add(asiento.getAsiento().getId());
+            });
+        }
+        return idAsientosReservados;
+    }
+
+    /**
+     * Creamos una nueva sesión
+     *
+     * @param newSesion
+     * @return Sesion creada
+     */
+    public Sesion createSesion(SesionPostDTO newSesion) {
+        Pelicula peliculaExists = peliculaRepository.findById(newSesion.getId_pelicula())
+                                                        .orElseThrow( () -> new ResourceNotFoundException("No existe la pelicula con id: " + newSesion.getId_pelicula()));
+        Sala salaExists = salaRepository.findById(newSesion.getId_sala())
+                                                        .orElseThrow( () -> new ResourceNotFoundException("No existe la sala con id: " + newSesion.getId_sala()));
+
+        Sesion createdSesion = new Sesion();
+        createdSesion.setFecha(newSesion.getFecha());
+        createdSesion.setHoras(newSesion.getHoras());
+        createdSesion.setPelicula(peliculaExists);
+        createdSesion.setSala(salaExists);
+        return sesionRepository.save(createdSesion);
+    }
+
+    /**
+     * Eliminamos una sesión
+     *
+     * @param idSesion
+     * @return Sesion eliminada
+     */
+    public Sesion deleteSesion(Long idSesion) {
+        Sesion sesionExists = sesionRepository.findById(idSesion)
+                .orElseThrow(() -> new ResourceNotFoundException("No existe la sesión con id: " + idSesion));
+        sesionRepository.delete(sesionExists);
+        return sesionExists;
     }
 }

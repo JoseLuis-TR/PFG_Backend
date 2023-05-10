@@ -2,12 +2,13 @@ package com.backend.pfg_haven.controller;
 
 import com.backend.pfg_haven.dto.usuario.UsuarioDTO;
 import com.backend.pfg_haven.dto.usuario.UsuarioDTOConverter;
+import com.backend.pfg_haven.dto.usuario.UsuarioModDTO;
 import com.backend.pfg_haven.model.Usuario;
 import com.backend.pfg_haven.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,11 +33,64 @@ public class UsuarioController {
     /**
      * Devolvemos un usuario en base a su ID
      */
-    @GetMapping("/usuario/{idUsuario}")
-    public UsuarioDTO getUsuarioById(@PathVariable Long idUsuario) {
+    @GetMapping("/usuario")
+    public UsuarioDTO getUsuarioById(@RequestParam Long idUsuario) {
         Usuario usuario = usuarioService.getUsuarioById(idUsuario);
         UsuarioDTOConverter converter = new UsuarioDTOConverter();
-        UsuarioDTO usuarioDTO = converter.convertToDTO(usuario);
-        return usuarioDTO;
+        return converter.convertToDTO(usuario);
+    }
+
+    /**
+     * Buscamos usuario por su nick
+     *
+     * @param nickBuscado
+     * @return true si existe, false si no existe
+     */
+    @GetMapping("/usuario/nick")
+    public Boolean getUsuarioByNick(@RequestParam String nickBuscado) {
+        Boolean usuarioExist = usuarioService.getUsuarioByNick(nickBuscado);
+        return usuarioExist;
+    }
+
+    /**
+     * Buscamos usuario por su email
+     *
+     * @param emailBuscado
+     * @return true si existe, false si no existe
+     */
+    @GetMapping("/usuario/email")
+    public Boolean getUsuarioByEmail(@RequestParam String emailBuscado) {
+        Boolean usuarioExist = usuarioService.getUsuarioByEmail(emailBuscado);
+        return usuarioExist;
+    }
+
+    /**
+     * Creamos un nuevo usuario
+     *
+     * @param newUsuario
+     * @return UsuarioDTO
+     */
+    @PostMapping("/usuario")
+    public UsuarioDTO createUsuario(@RequestBody UsuarioModDTO newUsuario) {
+        Usuario usuario = usuarioService.createUsuario(newUsuario);
+        UsuarioDTOConverter converter = new UsuarioDTOConverter();
+        return converter.convertToDTO(usuario);
+    }
+
+    /**
+     * Modificamos un usuario
+     *
+     * @param idUsuario Usuario que queremos modificar
+     * @param userToUpdate Datos a modificar (nick, email, clave)
+     * @param newAvatar Nuevo avatar a subir
+     * @return UsuarioDTO
+     */
+    @PutMapping(value = "/usuario", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public UsuarioDTO updateUsuario(@RequestParam Long idUsuario,
+                                    @RequestPart("userToUpdate") UsuarioModDTO userToUpdate,
+                                    @RequestPart(value ="newAvatar", required = false) MultipartFile newAvatar) {
+        Usuario usuario = usuarioService.updateUsuario(idUsuario, userToUpdate, newAvatar);
+        UsuarioDTOConverter converter = new UsuarioDTOConverter();
+        return converter.convertToDTO(usuario);
     }
 }

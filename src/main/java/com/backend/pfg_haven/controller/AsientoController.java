@@ -38,4 +38,6 @@ public class AsientoController {
     public List<Asiento> getAllAsientos() {
         return asientoRepository.findAll();
     }
+
+
 }

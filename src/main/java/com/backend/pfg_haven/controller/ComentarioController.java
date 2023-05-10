@@ -2,35 +2,25 @@ package com.backend.pfg_haven.controller;
 
 import com.backend.pfg_haven.dto.comentario.ComentarioPostDTO;
 import com.backend.pfg_haven.model.Comentario;
-import com.backend.pfg_haven.repository.ComentarioRepository;
 import com.backend.pfg_haven.services.ComentarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 public class ComentarioController {
 
-    private final ComentarioRepository comentarioRepository;
-
     private final ComentarioService comentarioService;
 
-    /**
-     * Obtenemos todos los comentarios de una película
-     */
-    @GetMapping("/comentarios")
-    public List<Comentario> getComentariosPelicula() {
-        return comentarioRepository.findAll();
-    }
 
     /**
      * Obtenemos todos los comentarios de una película paginados
      */
     @GetMapping("/comentarios/pelicula/{idPelicula}/paginado/{nPage}")
     public Map<String, Object> getComentariosPelicula(@PathVariable Long idPelicula, @PathVariable int nPage) {
+        System.out.println("ComentarioController.getComentariosPelicula");
         return comentarioService.getComentariosPelicula(idPelicula, nPage);
     }
 

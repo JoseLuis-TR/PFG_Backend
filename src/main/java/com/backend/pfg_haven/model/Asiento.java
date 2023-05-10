@@ -1,13 +1,11 @@
 package com.backend.pfg_haven.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,8 +29,4 @@ public class Asiento {
     @JoinColumn(name="id_sala")
     @JsonBackReference
     private Sala sala;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "asiento", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReservaTieneAsiento> reservasTieneAsientos;
 }

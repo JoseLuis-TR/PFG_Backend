@@ -1,5 +1,7 @@
 package com.backend.pfg_haven.controller;
 
+import com.backend.pfg_haven.dto.pelicula.PeliculaCarteleraDTO;
+import com.backend.pfg_haven.dto.pelicula.PeliculaDTOConverter;
 import com.backend.pfg_haven.dto.pelicula.PeliculaPostDTO;
 import com.backend.pfg_haven.model.Pelicula;
 import com.backend.pfg_haven.services.PeliculaService;
@@ -21,9 +23,9 @@ public class PeliculaController {
      *
      * @return Lista de peliculas en cartelera
      */
-    @GetMapping("/peliculas/page/{nPage}")
-    public Map<String, Object> getAllPeliculas(@PathVariable int nPage) {
-        return peliculaService.getAllPeliculas(nPage);
+    @GetMapping("/peliculas/page")
+    public Map<String, Object> getAllPeliculas(@RequestParam int numberPage) {
+        return peliculaService.getAllPeliculas(numberPage);
     }
 
     /**
@@ -32,9 +34,11 @@ public class PeliculaController {
      * @param idPelicula Identificador de la pelicula
      * @return Pelicula o error 404 si no encuentra la pelicula
      */
-    @GetMapping("/peliculas/{idPelicula}")
-    public Pelicula getPeliculaById(@PathVariable Long idPelicula) {
-        return peliculaService.getPeliculaById(idPelicula);
+    @GetMapping("/peliculas")
+    public PeliculaCarteleraDTO getPeliculaById(@RequestParam Long idPelicula) {
+        Pelicula peliculaEncontrada = peliculaService.getPeliculaById(idPelicula);
+        PeliculaDTOConverter peliculaDTOConverter = new PeliculaDTOConverter();
+        return peliculaDTOConverter.convertToCarteleraDTO(peliculaEncontrada);
     }
 
     /**
@@ -43,8 +47,8 @@ public class PeliculaController {
      * @param idPelicula Id de la pelicula
      * @return Pelicula eliminada
      */
-    @DeleteMapping("/peliculas/{idPelicula}")
-    public Pelicula deletePeliculaById(@PathVariable Long idPelicula) {
+    @DeleteMapping("/peliculas")
+    public Pelicula deletePeliculaById(@RequestParam Long idPelicula) {
         return peliculaService.deletePeliculaById(idPelicula);
     }
 
@@ -62,9 +66,9 @@ public class PeliculaController {
      * Se añade una nueva pelicula pero en esta ocasión recibiendo dos imagenes para
      * el poster y la captura de la pelicula
      *
-     * @param newPelicula
-     * @param poster
-     * @param captura
+     * @param newPelicula Datos de la pelicula
+     * @param poster Poster
+     * @param captura Captura
      * @return Pelicula añadida
      */
     @PostMapping(value = "/peliculas/archivos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -83,11 +87,11 @@ public class PeliculaController {
      * @param capturaToUpdate Captura de la pelicula
      * @return Pelicula actualizada
      */
-    @PutMapping(value = "/peliculas/{idPeliculaToUpdate}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Pelicula updatePelicula(@PathVariable Long idPeliculaToUpdate,
+    @PutMapping(value = "/peliculas", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Pelicula updatePelicula(@RequestParam Long idPelicula,
                                    @RequestPart("peliculaToUpdate") PeliculaPostDTO peliculaToUpdate,
                                    @RequestPart(value = "posterToUpdate", required = false) MultipartFile posterToUpdate,
                                    @RequestPart(value = "capturaToUpdate", required = false) MultipartFile capturaToUpdate) {
-        return peliculaService.updatePelicula(idPeliculaToUpdate, peliculaToUpdate, posterToUpdate, capturaToUpdate);
+        return peliculaService.updatePelicula(idPelicula, peliculaToUpdate, posterToUpdate, capturaToUpdate);
     }
 }
