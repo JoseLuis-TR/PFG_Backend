@@ -20,7 +20,8 @@ public class GeneralConfiguration {
             public void addCorsMappings(CorsRegistry registry) {
                 registry
                         .addMapping("/**")
-                        .allowedMethods("*").allowedOrigins("*");
+                        .allowedMethods("GET","POST","PUT","DELETE")
+                        .allowedOrigins("*");
             }
         };
     }
