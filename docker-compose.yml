@@ -15,8 +15,8 @@ services:
       - 3307
     volumes:
       - ./mysql:/var/lib/mysql
-      - ./dumpPFG.sql:/docker-entrypoint-initcinesDB.d/dumpPFG.sql
-    command: --init-file /docker-entrypoint-initcinesDB.d/Dump20230422.sql
+      - ./mysqlfile/dumpPFGSchema.sql:/docker-entrypoint-initcinesDB.d/dumpPFGSchema.sql
+    command: --init-file /docker-entrypoint-initcinesDB.d/dumpPFGSchema.sql
 
   backend:
     container_name: springbackend

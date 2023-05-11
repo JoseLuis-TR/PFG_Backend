@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `cineshaven` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `cineshaven`;
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: cineshaven
@@ -30,7 +32,7 @@ CREATE TABLE `asiento` (
   PRIMARY KEY (`id`),
   KEY `fk_Asiento_Sala1_idx` (`id_sala`),
   CONSTRAINT `fk_Asiento_Sala1` FOREIGN KEY (`id_sala`) REFERENCES `sala` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=361 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +94,7 @@ CREATE TABLE `pelicula` (
   `sinopsis` varchar(750) COLLATE utf8mb4_spanish_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre_UNIQUE` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,7 +103,7 @@ CREATE TABLE `pelicula` (
 
 LOCK TABLES `pelicula` WRITE;
 /*!40000 ALTER TABLE `pelicula` DISABLE KEYS */;
-INSERT INTO `pelicula` VALUES (1,'Pericles on 31st Street','Athene Rodrigo',1,'https://businesswire.com','http://dummyimage.com/222x100.png/ff4444/ffffff','http://dummyimage.com/138x100.png/5fa2dd/ffffff','vel augue vestibulum ante ipsum primis in faucibus orci luctus et ultrices'),(2,'Wild Bill','Edna Pantone',2,'https://mozilla.com','http://dummyimage.com/205x100.png/ff4444/ffffff','http://dummyimage.com/167x100.png/dddddd/000000','lectus in quam fringilla rhoncus mauris enim leo rhoncus sed'),(3,'Silver City','Silvain Orans',3,'https://free.fr','http://dummyimage.com/246x100.png/cc0000/ffffff','http://dummyimage.com/192x100.png/ff4444/ffffff','blandit non interdum in ante vestibulum ante ipsum primis in'),(4,'Enemy','Josias De Ruggiero',4,'http://biblegateway.com','http://dummyimage.com/190x100.png/dddddd/000000','http://dummyimage.com/245x100.png/cc0000/ffffff','mauris viverra diam vitae quam suspendisse potenti nullam porttitor lacus at turpis'),(5,'Woman in the Window, The','Briana Burgiss',5,'https://cbsnews.com','http://dummyimage.com/145x100.png/dddddd/000000','http://dummyimage.com/166x100.png/dddddd/000000','ridiculus mus etiam vel augue vestibulum rutrum rutrum neque aenean'),(6,'Lawrence of Arabia','Kelwin Mynett',6,'http://hostgator.com','http://dummyimage.com/138x100.png/cc0000/ffffff','http://dummyimage.com/240x100.png/5fa2dd/ffffff','sit amet cursus id turpis integer aliquet massa id lobortis convallis tortor risus dapibus augue vel'),(7,'Dante\'s Inferno','Yorgos Vigne',7,'https://spotify.com','http://dummyimage.com/105x100.png/cc0000/ffffff','http://dummyimage.com/149x100.png/cc0000/ffffff','ac neque duis bibendum morbi non quam nec dui luctus rutrum nulla tellus in sagittis'),(8,'My Lady Margarine (Die Austernprinzessin) (Oyster Princess, The)','Liuka Radin',8,'https://un.org','http://dummyimage.com/184x100.png/ff4444/ffffff','http://dummyimage.com/122x100.png/dddddd/000000','augue a suscipit nulla elit ac nulla sed vel enim'),(9,'Actress, the Dollars and the Transylvanians, The (Artista, dolarii si Ardelenii)','Janis Dybald',9,'https://i2i.jp','http://dummyimage.com/246x100.png/dddddd/000000','http://dummyimage.com/215x100.png/cc0000/ffffff','augue aliquam erat volutpat in congue etiam justo etiam pretium iaculis justo in'),(10,'Five Minarets in New York (Act of Vengeance) (Terrorist, The)','Gerti Lain',10,'http://linkedin.com','http://dummyimage.com/228x100.png/5fa2dd/ffffff','http://dummyimage.com/219x100.png/cc0000/ffffff','ultrices vel augue vestibulum ante ipsum primis in faucibus orci luctus et'),(11,'Beowulf','Hyacinthe Hiorn',11,'http://latimes.com','http://dummyimage.com/137x100.png/ff4444/ffffff','http://dummyimage.com/124x100.png/cc0000/ffffff','sapien quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer a nibh'),(12,'Bad Teacher','Rory Deerness',12,'https://storify.com','http://dummyimage.com/130x100.png/5fa2dd/ffffff','http://dummyimage.com/242x100.png/5fa2dd/ffffff','phasellus in felis donec semper sapien a libero nam dui proin leo odio porttitor id consequat in consequat ut nulla'),(13,'The Way He Looks','Elianore Duddell',13,'https://comsenz.com','http://dummyimage.com/147x100.png/cc0000/ffffff','http://dummyimage.com/223x100.png/5fa2dd/ffffff','vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae'),(14,'Great Flamarion, The','Sven Antonias',14,'http://bbb.org','http://dummyimage.com/189x100.png/ff4444/ffffff','http://dummyimage.com/137x100.png/ff4444/ffffff','platea dictumst etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate'),(15,'Merlusse','Arabella Dunridge',15,'https://typepad.com','http://dummyimage.com/167x100.png/dddddd/000000','http://dummyimage.com/239x100.png/cc0000/ffffff','tellus nisi eu orci mauris lacinia sapien quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum'),(16,'Czech Dream (Ceský sen)','Orelee Stanluck',16,'https://flickr.com','http://dummyimage.com/132x100.png/cc0000/ffffff','http://dummyimage.com/125x100.png/5fa2dd/ffffff','consequat ut nulla sed accumsan felis ut at dolor quis odio consequat varius integer ac'),(17,'Happy Feet','Wang Fardon',17,'https://prlog.org','http://dummyimage.com/250x100.png/cc0000/ffffff','http://dummyimage.com/108x100.png/cc0000/ffffff','vivamus vestibulum sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue'),(18,'Border, The','Tremain Heggadon',18,'https://mac.com','http://dummyimage.com/238x100.png/ff4444/ffffff','http://dummyimage.com/134x100.png/ff4444/ffffff','aliquam augue quam sollicitudin vitae consectetuer eget rutrum at lorem integer tincidunt'),(19,'Incredible Hulk Returns, The','Kin Durling',19,'https://zimbio.com','http://dummyimage.com/172x100.png/cc0000/ffffff','http://dummyimage.com/144x100.png/dddddd/000000','sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris laoreet ut'),(20,'Sweet Bird of Youth','Wilbert Bevington',20,'http://google.es','http://dummyimage.com/123x100.png/dddddd/000000','http://dummyimage.com/201x100.png/ff4444/ffffff','nulla eget eros elementum pellentesque quisque porta volutpat erat quisque erat');
+INSERT INTO `pelicula` VALUES (1,'Pericles on 31st Street','Athene Rodrigo',1,'https://businesswire.com','http://dummyimage.com/222x100.png/ff4444/ffffff','http://dummyimage.com/138x100.png/5fa2dd/ffffff','vel augue vestibulum ante ipsum primis in faucibus orci luctus et ultrices'),(2,'Wild Bill','Edna Pantone',2,'https://mozilla.com','http://dummyimage.com/205x100.png/ff4444/ffffff','http://dummyimage.com/167x100.png/dddddd/000000','lectus in quam fringilla rhoncus mauris enim leo rhoncus sed'),(3,'Silver City','Silvain Orans',3,'https://free.fr','http://dummyimage.com/246x100.png/cc0000/ffffff','http://dummyimage.com/192x100.png/ff4444/ffffff','blandit non interdum in ante vestibulum ante ipsum primis in'),(4,'Enemy','Josias De Ruggiero',4,'http://biblegateway.com','http://dummyimage.com/190x100.png/dddddd/000000','http://dummyimage.com/245x100.png/cc0000/ffffff','mauris viverra diam vitae quam suspendisse potenti nullam porttitor lacus at turpis'),(5,'Woman in the Window, The','Briana Burgiss',5,'https://cbsnews.com','http://dummyimage.com/145x100.png/dddddd/000000','http://dummyimage.com/166x100.png/dddddd/000000','ridiculus mus etiam vel augue vestibulum rutrum rutrum neque aenean'),(6,'Lawrence of Arabia','Kelwin Mynett',6,'http://hostgator.com','http://dummyimage.com/138x100.png/cc0000/ffffff','http://dummyimage.com/240x100.png/5fa2dd/ffffff','sit amet cursus id turpis integer aliquet massa id lobortis convallis tortor risus dapibus augue vel'),(7,'Dante\'s Inferno','Yorgos Vigne',7,'https://spotify.com','http://dummyimage.com/105x100.png/cc0000/ffffff','http://dummyimage.com/149x100.png/cc0000/ffffff','ac neque duis bibendum morbi non quam nec dui luctus rutrum nulla tellus in sagittis'),(8,'My Lady Margarine (Die Austernprinzessin) (Oyster Princess, The)','Liuka Radin',8,'https://un.org','http://dummyimage.com/184x100.png/ff4444/ffffff','http://dummyimage.com/122x100.png/dddddd/000000','augue a suscipit nulla elit ac nulla sed vel enim'),(9,'Actress, the Dollars and the Transylvanians, The (Artista, dolarii si Ardelenii)','Janis Dybald',9,'https://i2i.jp','http://dummyimage.com/246x100.png/dddddd/000000','http://dummyimage.com/215x100.png/cc0000/ffffff','augue aliquam erat volutpat in congue etiam justo etiam pretium iaculis justo in'),(10,'Five Minarets in New York (Act of Vengeance) (Terrorist, The)','Gerti Lain',10,'http://linkedin.com','http://dummyimage.com/228x100.png/5fa2dd/ffffff','http://dummyimage.com/219x100.png/cc0000/ffffff','ultrices vel augue vestibulum ante ipsum primis in faucibus orci luctus et'),(11,'Beowulf','Hyacinthe Hiorn',11,'http://latimes.com','http://dummyimage.com/137x100.png/ff4444/ffffff','http://dummyimage.com/124x100.png/cc0000/ffffff','sapien quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer a nibh'),(12,'Bad Teacher','Rory Deerness',12,'https://storify.com','http://dummyimage.com/130x100.png/5fa2dd/ffffff','http://dummyimage.com/242x100.png/5fa2dd/ffffff','phasellus in felis donec semper sapien a libero nam dui proin leo odio porttitor id consequat in consequat ut nulla'),(13,'The Way He Looks','Elianore Duddell',13,'https://comsenz.com','http://dummyimage.com/147x100.png/cc0000/ffffff','http://dummyimage.com/223x100.png/5fa2dd/ffffff','vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae'),(14,'Great Flamarion, The','Sven Antonias',14,'http://bbb.org','http://dummyimage.com/189x100.png/ff4444/ffffff','http://dummyimage.com/137x100.png/ff4444/ffffff','platea dictumst etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate'),(15,'Merlusse','Arabella Dunridge',15,'https://typepad.com','http://dummyimage.com/167x100.png/dddddd/000000','http://dummyimage.com/239x100.png/cc0000/ffffff','tellus nisi eu orci mauris lacinia sapien quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum'),(16,'Czech Dream (Ceský sen)','Orelee Stanluck',16,'https://flickr.com','http://dummyimage.com/132x100.png/cc0000/ffffff','http://dummyimage.com/125x100.png/5fa2dd/ffffff','consequat ut nulla sed accumsan felis ut at dolor quis odio consequat varius integer ac'),(17,'Happy Feet','Wang Fardon',17,'https://prlog.org','http://dummyimage.com/250x100.png/cc0000/ffffff','http://dummyimage.com/108x100.png/cc0000/ffffff','vivamus vestibulum sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue'),(18,'Border, The','Tremain Heggadon',18,'https://mac.com','http://dummyimage.com/238x100.png/ff4444/ffffff','http://dummyimage.com/134x100.png/ff4444/ffffff','aliquam augue quam sollicitudin vitae consectetuer eget rutrum at lorem integer tincidunt'),(19,'Incredible Hulk Returns, The','Kin Durling',19,'https://zimbio.com','http://dummyimage.com/172x100.png/cc0000/ffffff','http://dummyimage.com/144x100.png/dddddd/000000','sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris laoreet ut'),(20,'Sweet Bird of Youth','Wilbert Bevington',20,'http://google.es','http://dummyimage.com/123x100.png/dddddd/000000','http://dummyimage.com/201x100.png/ff4444/ffffff','nulla eget eros elementum pellentesque quisque porta volutpat erat quisque erat'),(21,'Oldboy','Park Chan-Wook',90,'www.google.com','http://localhost:8080/files/1683744087066_posterEjemplo.png','http://localhost:8080/files/1683744087092_capturaEjemplo.png','Busca venganza');
 /*!40000 ALTER TABLE `pelicula` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +124,7 @@ CREATE TABLE `reserva` (
   KEY `fk_Reserva_Sesion1_idx` (`id_sesion`),
   CONSTRAINT `fk_Reserva_Sesion1` FOREIGN KEY (`id_sesion`) REFERENCES `sesion` (`id`),
   CONSTRAINT `fk_Reserva_Usuario1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +133,7 @@ CREATE TABLE `reserva` (
 
 LOCK TABLES `reserva` WRITE;
 /*!40000 ALTER TABLE `reserva` DISABLE KEYS */;
-INSERT INTO `reserva` VALUES (1,'2023-05-09',1,1),(2,'2023-05-09',1,1);
+INSERT INTO `reserva` VALUES (1,'2023-05-09',1,1),(2,'2023-05-09',1,1),(3,'2023-05-10',1,1);
 /*!40000 ALTER TABLE `reserva` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,7 +153,7 @@ CREATE TABLE `reserva_tiene_asiento` (
   KEY `fk_Reserva_has_Asiento_Reserva1_idx` (`id_reserva`),
   CONSTRAINT `fk_Reserva_has_Asiento_Asiento1` FOREIGN KEY (`id_asiento`) REFERENCES `asiento` (`id`),
   CONSTRAINT `fk_Reserva_has_Asiento_Reserva1` FOREIGN KEY (`id_reserva`) REFERENCES `reserva` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +162,7 @@ CREATE TABLE `reserva_tiene_asiento` (
 
 LOCK TABLES `reserva_tiene_asiento` WRITE;
 /*!40000 ALTER TABLE `reserva_tiene_asiento` DISABLE KEYS */;
-INSERT INTO `reserva_tiene_asiento` VALUES (1,1,1),(2,1,2),(3,1,3),(4,2,1),(5,2,2),(6,2,3);
+INSERT INTO `reserva_tiene_asiento` VALUES (1,1,1),(2,1,2),(3,1,3),(4,2,1),(5,2,2),(6,2,3),(7,3,1),(8,3,2),(9,3,3);
 /*!40000 ALTER TABLE `reserva_tiene_asiento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,7 +188,7 @@ CREATE TABLE `sala` (
 
 LOCK TABLES `sala` WRITE;
 /*!40000 ALTER TABLE `sala` DISABLE KEYS */;
-INSERT INTO `sala` VALUES (1,'Sala 1',60),(2,'Sala 2',60),(3,'Sala3',60);
+INSERT INTO `sala` VALUES (1,'Sala 1',390),(2,'Sala 2',390),(3,'Sala3',390);
 /*!40000 ALTER TABLE `sala` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,7 +270,7 @@ CREATE TABLE `usuario_ha_visto_pelicula` (
   KEY `fk_Usuario_has_Pelicula_Usuario1_idx` (`id_usuario`),
   CONSTRAINT `fk_Usuario_has_Pelicula_Pelicula2` FOREIGN KEY (`id_pelicula`) REFERENCES `pelicula` (`id`),
   CONSTRAINT `fk_Usuario_has_Pelicula_Usuario1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,7 +279,7 @@ CREATE TABLE `usuario_ha_visto_pelicula` (
 
 LOCK TABLES `usuario_ha_visto_pelicula` WRITE;
 /*!40000 ALTER TABLE `usuario_ha_visto_pelicula` DISABLE KEYS */;
-INSERT INTO `usuario_ha_visto_pelicula` VALUES (1,1,2,'2023-05-09');
+INSERT INTO `usuario_ha_visto_pelicula` VALUES (1,1,2,'2023-05-09'),(2,1,2,'2023-05-10');
 /*!40000 ALTER TABLE `usuario_ha_visto_pelicula` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -290,4 +292,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-10 19:39:50
+-- Dump completed on 2023-05-11 21:58:37
