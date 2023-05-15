@@ -22,4 +22,6 @@ public class PeliculaCarteleraDTO {
     private String captura;
 
     private String sinopsis;
+
+    private int votos;
 }

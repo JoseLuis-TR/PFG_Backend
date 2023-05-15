@@ -71,6 +71,22 @@ public class UsuarioService {
     }
 
     /**
+     * Revisamos si el login es correcto
+     *
+     * @param email Email del usuario
+     * @param clave Clave del usuario
+     * @return Usuario si el login es correcto, error 404 si no
+     */
+    public Usuario checkLogin(String email, String clave) {
+        Usuario foundUser = usuarioRepository.findByEmailAndClave(email, clave);
+        if(foundUser == null) {
+            throw new ResourceNotFoundException("No se encontró el usuario con email: " + email);
+        } else {
+            return foundUser;
+        }
+    }
+
+    /**
      * Creamos nuevo usuario en la base de datos
      *
      * @param newUsuario Usuario a crear

@@ -64,6 +64,13 @@ public class UsuarioController {
         return usuarioExist;
     }
 
+    @PostMapping("/usuario/login")
+    public UsuarioDTO loginUsuario(@RequestParam String email, @RequestParam String clave) {
+    	Usuario usuario = usuarioService.checkLogin(email, clave);
+    	UsuarioDTOConverter converter = new UsuarioDTOConverter();
+    	return converter.convertToDTO(usuario);
+    }
+
     /**
      * Creamos un nuevo usuario
      *

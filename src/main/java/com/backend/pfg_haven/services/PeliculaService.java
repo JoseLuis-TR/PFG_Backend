@@ -69,6 +69,15 @@ public class PeliculaService {
     }
 
     /**
+     * Obtenemos el top 10 de peliculas por votos
+     *
+     * @return Lista de peliculas
+     */
+    public List<Pelicula> getTop10Peliculas() {
+        return peliculaRepository.findTop10ByOrderByVotosDesc();
+    }
+
+    /**
      * Se elimina una pelicula por su id
      *
      * @param id Id de la película
@@ -208,5 +217,22 @@ public class PeliculaService {
     	peliculaRepository.save(pelicula);
 
     	return pelicula;
+    }
+
+    /**
+     * Se añade un nuevo voto a una pelicula
+     *
+     * @param idPelicula Id de la pelicula a la que se le añade el voto
+     * @return Pelicula con el voto añadido
+     */
+    public Pelicula addVoto(Long idPelicula) {
+        Pelicula pelicula = peliculaRepository
+                .findById(idPelicula)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encuentra la pelicula a la que quiere añadir el voto"));
+
+        pelicula.setVotos(pelicula.getVotos() + 1);
+        peliculaRepository.save(pelicula);
+
+        return pelicula;
     }
 }

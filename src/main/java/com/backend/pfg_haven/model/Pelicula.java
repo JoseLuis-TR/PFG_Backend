@@ -42,6 +42,9 @@ public class Pelicula {
     @Column(name = "sinopsis", length = 750, nullable = false)
     private String sinopsis;
 
+    @Column(name="votos")
+    private int votos = 0;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "pelicula", cascade = CascadeType.ALL)
     private List<Sesion> sesiones;

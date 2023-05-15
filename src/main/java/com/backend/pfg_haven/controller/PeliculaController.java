@@ -10,7 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,6 +41,18 @@ public class PeliculaController {
         Pelicula peliculaEncontrada = peliculaService.getPeliculaById(idPelicula);
         PeliculaDTOConverter peliculaDTOConverter = new PeliculaDTOConverter();
         return peliculaDTOConverter.convertToCarteleraDTO(peliculaEncontrada);
+    }
+
+    /**
+     * Obtenemos el top 10 de peliculas con mas votos
+     *
+     * @return Lista de peliculas ordenadas por votos
+     */
+    @GetMapping("/peliculas/top")
+    public List<PeliculaCarteleraDTO> getTopPeliculas() {
+        List<Pelicula> peliculas = peliculaService.getTop10Peliculas();
+        PeliculaDTOConverter peliculaDTOConverter = new PeliculaDTOConverter();
+        return peliculas.stream().map(peliculaDTOConverter::convertToCarteleraDTO).collect(Collectors.toList());
     }
 
     /**
@@ -93,5 +107,18 @@ public class PeliculaController {
                                    @RequestPart(value = "posterToUpdate", required = false) MultipartFile posterToUpdate,
                                    @RequestPart(value = "capturaToUpdate", required = false) MultipartFile capturaToUpdate) {
         return peliculaService.updatePelicula(idPelicula, peliculaToUpdate, posterToUpdate, capturaToUpdate);
+    }
+
+    /**
+     * Se añade un voto a una pelicula
+     *
+     * @param idPelicula Id de la pelicula
+     * @return Pelicula actualizada
+     */
+    @PutMapping("/peliculas/voto")
+    public PeliculaCarteleraDTO addVoto(@RequestParam Long idPelicula) {
+        Pelicula peliculaVotada = peliculaService.addVoto(idPelicula);
+        PeliculaDTOConverter peliculaDTOConverter = new PeliculaDTOConverter();
+        return peliculaDTOConverter.convertToCarteleraDTO(peliculaVotada);
     }
 }
