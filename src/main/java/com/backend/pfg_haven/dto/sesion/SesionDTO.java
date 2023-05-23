@@ -5,6 +5,7 @@ import com.backend.pfg_haven.dto.sala.SalaDTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
 import java.time.LocalDate;
 
 @Getter
@@ -15,7 +16,7 @@ public class SesionDTO {
 
     private LocalDate fecha;
 
-    private String horas;
+    private Time hora;
 
     private SalaDTO salaSesion;
 

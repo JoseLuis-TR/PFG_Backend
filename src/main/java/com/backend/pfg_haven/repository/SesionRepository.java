@@ -20,5 +20,5 @@ public interface SesionRepository extends JpaRepository<Sesion, Long> {
      *
      * @return Lista de las sesiones a partir de hoy
      */
-    List<Sesion> findByFechaGreaterThanEqual(LocalDate fecha);
+    List<Sesion> findByFechaGreaterThanEqualOrderByFecha(LocalDate fecha);
 }

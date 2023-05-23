@@ -9,6 +9,8 @@ import com.backend.pfg_haven.model.Sesion;
 import com.backend.pfg_haven.services.SesionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -101,8 +103,12 @@ public class SesionController {
      * @return Sesion creada
      */
     @PostMapping("/sesiones")
-    public Sesion createSesion(@RequestBody SesionPostDTO newSesion) {
-        return sesionService.createSesion(newSesion);
+    public ResponseEntity<Boolean> createSesion(@RequestBody SesionPostDTO newSesion) {
+        Boolean sesionesGuardadas = sesionService.createSesion(newSesion);
+
+        // SI ha ocurrido un error al guardar, lanzamos un bad request
+        if(!sesionesGuardadas) return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Boolean>(true, HttpStatus.CREATED);
     }
 
     /**

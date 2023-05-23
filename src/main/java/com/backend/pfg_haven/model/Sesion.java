@@ -10,6 +10,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,8 +31,8 @@ public class Sesion implements Serializable {
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
-    @Column(name = "horas", nullable = false, length = 150)
-    private String horas;
+    @Column(name = "hora", nullable = false, length = 150)
+    private Time hora;
 
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ public class SesionService {
      * @return Lista de las sesiones a partir de hoy
      */
     public HashMap<Sesion, HashMap<String, Object>> getSessionsAfterToday() {
-        List<Sesion> sesionesDesdeHoy = sesionRepository.findByFechaGreaterThanEqual(LocalDate.now());
+        List<Sesion> sesionesDesdeHoy = sesionRepository.findByFechaGreaterThanEqualOrderByFecha(LocalDate.now());
         if(sesionesDesdeHoy.isEmpty()) {
             throw new ResourceNotFoundException("No hay sesiones a partir de hoy");
         }
@@ -108,18 +110,30 @@ public class SesionService {
      * @param newSesion
      * @return Sesion creada
      */
-    public Sesion createSesion(SesionPostDTO newSesion) {
+    public Boolean createSesion(SesionPostDTO newSesion) {
         Pelicula peliculaExists = peliculaRepository.findById(newSesion.getId_pelicula())
                                                         .orElseThrow( () -> new ResourceNotFoundException("No existe la pelicula con id: " + newSesion.getId_pelicula()));
         Sala salaExists = salaRepository.findById(newSesion.getId_sala())
                                                         .orElseThrow( () -> new ResourceNotFoundException("No existe la sala con id: " + newSesion.getId_sala()));
 
-        Sesion createdSesion = new Sesion();
-        createdSesion.setFecha(newSesion.getFecha());
-        createdSesion.setHoras(newSesion.getHoras());
-        createdSesion.setPelicula(peliculaExists);
-        createdSesion.setSala(salaExists);
-        return sesionRepository.save(createdSesion);
+        String[] horasArray = newSesion.getHoras().split(",");
+
+        for(String hora : horasArray){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            try {
+                java.util.Date horaParseada = dateFormat.parse(hora);
+                Time horaFormatoTime = new Time(horaParseada.getTime());
+                Sesion createdSesion = new Sesion();
+                createdSesion.setFecha(newSesion.getFecha());
+                createdSesion.setHora(horaFormatoTime);
+                createdSesion.setPelicula(peliculaExists);
+                createdSesion.setSala(salaExists);
+                sesionRepository.save(createdSesion);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
