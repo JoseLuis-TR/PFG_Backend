@@ -42,7 +42,7 @@ public class PeliculaService {
     public Map<String, Object> getAllPeliculas(int nPage){
         // Creamos el parámetro de búsqueda por la página que recibimos en la petición
         // TODO - Modificar el tamaño de la página
-        Pageable parametrosPagina = PageRequest.of(nPage,10, Sort.by("nombre").ascending());
+        Pageable parametrosPagina = PageRequest.of(nPage,30, Sort.by("nombre").ascending());
         Page<Pelicula> listaPeliculas = peliculaRepository.findAll(parametrosPagina);
         // Convertimos la lista de peliculas al correspondiente DTO
         PeliculaDTOConverter peliculaDTOConverter = new PeliculaDTOConverter();

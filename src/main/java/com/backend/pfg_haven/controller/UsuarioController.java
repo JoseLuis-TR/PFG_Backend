@@ -3,6 +3,7 @@ package com.backend.pfg_haven.controller;
 import com.backend.pfg_haven.dto.usuario.UsuarioDTO;
 import com.backend.pfg_haven.dto.usuario.UsuarioDTOConverter;
 import com.backend.pfg_haven.dto.usuario.UsuarioModDTO;
+import com.backend.pfg_haven.dto.usuario.UsuarioRequestDTO;
 import com.backend.pfg_haven.model.Usuario;
 import com.backend.pfg_haven.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -65,7 +66,9 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuario/login")
-    public UsuarioDTO loginUsuario(@RequestParam String email, @RequestParam String clave) {
+    public UsuarioDTO loginUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
+        String email = usuarioRequestDTO.getEmail();
+        String clave = usuarioRequestDTO.getClave();
     	Usuario usuario = usuarioService.checkLogin(email, clave);
     	UsuarioDTOConverter converter = new UsuarioDTOConverter();
     	return converter.convertToDTO(usuario);
