@@ -61,8 +61,8 @@ public class PeliculaController {
      * @param idPelicula Id de la pelicula
      * @return Pelicula eliminada
      */
-    @DeleteMapping("/peliculas")
-    public Pelicula deletePeliculaById(@RequestParam Long idPelicula) {
+    @DeleteMapping("/delPelicula/{idPelicula}")
+    public Pelicula deletePeliculaById(@PathVariable Long idPelicula) {
         return peliculaService.deletePeliculaById(idPelicula);
     }
 

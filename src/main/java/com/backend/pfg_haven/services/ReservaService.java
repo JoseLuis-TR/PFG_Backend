@@ -40,7 +40,10 @@ public class ReservaService {
      */
     public Reserva addReserva(ReservaPostDTO newReserva){
 
-        Usuario usuarioExists = usuarioRepository.findById(newReserva.getId_usuario()).orElseThrow( () -> new ResourceNotFoundException("No existe el usuario especificado"));
+        Usuario usuarioExists = null;
+        if(newReserva.getId_usuario() != null){
+            usuarioExists = usuarioRepository.findById(newReserva.getId_usuario()).orElseThrow( () -> new ResourceNotFoundException("No existe el usuario especificado"));
+        }
         Sesion sesionExists = sesionRepository.findById(newReserva.getId_sesion()).orElseThrow( () -> new ResourceNotFoundException("No existe la sesion especificada"));
 
         Reserva newReservaParaTabla = new Reserva();
@@ -55,8 +58,11 @@ public class ReservaService {
 
         // Añadimos un registro de los asientos escogidos en la sesion
         reservaTieneAsientoService.addReservaTieneAsiento(reserva.getId(), newReserva.getAsientos());
-        // Añadimos un registro de que el usuario ha visto la pelicula
-        usuarioHaVistoPeliculaService.addUsuarioHaVistoPelicula(usuarioExists, sesionExists, fechaFormateada);
+
+        if(usuarioExists != null){
+            // Añadimos un registro de que el usuario ha visto la pelicula
+            usuarioHaVistoPeliculaService.addUsuarioHaVistoPelicula(usuarioExists, sesionExists, fechaFormateada);
+        }
         return reserva;
     }
 

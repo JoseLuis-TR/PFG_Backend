@@ -46,11 +46,11 @@ public class Pelicula {
     private int votos = 0;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pelicula", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pelicula", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sesion> sesiones;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pelicula", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pelicula", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comentario> comentarios;
 
 }

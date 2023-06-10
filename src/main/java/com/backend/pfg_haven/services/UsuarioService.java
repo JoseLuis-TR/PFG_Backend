@@ -78,11 +78,15 @@ public class UsuarioService {
      * @return Usuario si el login es correcto, error 404 si no
      */
     public Usuario checkLogin(String email, String clave) {
-        Usuario foundUser = usuarioRepository.findByEmailAndClave(email, clave);
+        Usuario foundUser = usuarioRepository.findByEmail(email);
         if(foundUser == null) {
             throw new ResourceNotFoundException("No se encontró el usuario con email: " + email);
         } else {
-            return foundUser;
+            if(!foundUser.getClave().equals(clave)) {
+                throw new ResourceNotFoundException("La clave no es correcta");
+            } else {
+                return foundUser;
+            }
         }
     }
 
@@ -118,8 +122,14 @@ public class UsuarioService {
                                             .findById(idUsuario)
                                             .orElseThrow(() -> new ResourceNotFoundException("No se encontró el usuario con id: " + idUsuario));
 
-        Usuario nickExist = usuarioRepository.findByNick(updatedUser.getNick());
-        Usuario emailExist = usuarioRepository.findByEmail(updatedUser.getEmail());
+        Usuario nickExist = null;
+        Usuario emailExist = null;
+        if(!updatedUser.getNick().isEmpty()){
+            nickExist = usuarioRepository.findByNick(updatedUser.getNick());
+        }
+        if(!updatedUser.getEmail().isEmpty()){
+            emailExist = usuarioRepository.findByEmail(updatedUser.getEmail());
+        }
         if(nickExist != null && !nickExist.getId().equals(idUsuario)) {
             throw new EntityExistsException("El nick ya existe");
         }
@@ -129,20 +139,20 @@ public class UsuarioService {
 
         String urlAvatar = null;
 
-        if(newAvatar != null) {
+        if(newAvatar != null && !newAvatar.isEmpty()) {
             String avatarSubido = storageService.store(newAvatar);
             urlAvatar = MvcUriComponentsBuilder
                             .fromMethodName(FicherosController.class, "serveFile", avatarSubido, null)
                             .build().toUriString();
         }
 
-        if(!updatedUser.getNick().equals(usuarioToUpdate.getNick())) {
+        if(!updatedUser.getNick().isEmpty() && !updatedUser.getNick().equals(usuarioToUpdate.getNick())) {
             usuarioToUpdate.setNick(updatedUser.getNick());
         }
-        if(!updatedUser.getEmail().equals(usuarioToUpdate.getEmail())) {
+        if(!updatedUser.getEmail().isEmpty() && !updatedUser.getEmail().equals(usuarioToUpdate.getEmail())) {
             usuarioToUpdate.setEmail(updatedUser.getEmail());
         }
-        if(!updatedUser.getClave().equals(usuarioToUpdate.getClave())) {
+        if(!updatedUser.getClave().isEmpty() && !updatedUser.getClave().equals(usuarioToUpdate.getClave())) {
             usuarioToUpdate.setClave(updatedUser.getClave());
         }
         if(urlAvatar != null){
