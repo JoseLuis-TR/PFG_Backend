@@ -8,4 +8,6 @@ import java.util.List;
 public interface ReservaRepository extends JpaRepository<Reserva, Long>{
 
     List<Reserva> findBySesionId(Long idSesion);
+
+    List<Reserva> findAllBySesion_Id(Long idSesion);
 }

@@ -91,8 +91,8 @@ public class SesionController {
      * @param idSesion Id de la sesión
      * @return Lista de asientos reservados
      */
-    @GetMapping("/sesiones/{idSesion}/asientos")
-    public List<Long> getReservedSeatsBySesionId(Long idSesion) {
+    @GetMapping("/sesiones/asientos/{idSesion}")
+    public List<Long> getReservedSeatsBySesionId(@PathVariable Long idSesion) {
         return sesionService.getReservedSeatsBySesionId(idSesion);
     }
 

@@ -1,6 +1,7 @@
 package com.backend.pfg_haven.services;
 
 import com.backend.pfg_haven.dto.reserva.ReservaPostDTO;
+import com.backend.pfg_haven.model.Asiento;
 import com.backend.pfg_haven.model.Reserva;
 import com.backend.pfg_haven.model.Sesion;
 import com.backend.pfg_haven.model.Usuario;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReservaService {
@@ -65,5 +68,4 @@ public class ReservaService {
         }
         return reserva;
     }
-
 }

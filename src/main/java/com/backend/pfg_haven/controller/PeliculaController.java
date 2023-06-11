@@ -2,6 +2,7 @@ package com.backend.pfg_haven.controller;
 
 import com.backend.pfg_haven.dto.pelicula.PeliculaCarteleraDTO;
 import com.backend.pfg_haven.dto.pelicula.PeliculaDTOConverter;
+import com.backend.pfg_haven.dto.pelicula.PeliculaMiniDTO;
 import com.backend.pfg_haven.dto.pelicula.PeliculaPostDTO;
 import com.backend.pfg_haven.model.Pelicula;
 import com.backend.pfg_haven.services.PeliculaService;
@@ -21,13 +22,25 @@ public class PeliculaController {
     private final PeliculaService peliculaService;
 
     /**
-     * Obtenemos lista de todas las peliculas
+     * Obtenemos lista de todas las peliculas paginadas
      *
      * @return Lista de peliculas en cartelera
      */
     @GetMapping("/peliculas/page")
     public Map<String, Object> getAllPeliculas(@RequestParam int numberPage) {
         return peliculaService.getAllPeliculas(numberPage);
+    }
+
+    /**
+     * Obtenemos una versión reducida de todas las peliculas con nombre e id
+     *
+     * @return Lista de peliculas en cartelera
+     */
+    @GetMapping("/peliculasMini")
+    public List<PeliculaMiniDTO> getAllPeliculas() {
+        List<Pelicula> peliculas = peliculaService.getAllPeliculasMini();
+        PeliculaDTOConverter peliculaDTOConverter = new PeliculaDTOConverter();
+        return peliculas.stream().map(peliculaDTOConverter::convertToMiniDTO).collect(Collectors.toList());
     }
 
     /**

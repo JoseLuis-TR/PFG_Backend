@@ -44,7 +44,7 @@ public class ComentarioService {
      * @return lista de comentarios paginados
      */
     public Map<String, Object> getComentariosPelicula(Long idPelicula, int nPage) {
-        Pageable datosPagina = PageRequest.of(nPage, 100, Sort.by("fecha").descending());
+        Pageable datosPagina = PageRequest.of(nPage,  200, Sort.by("fecha").descending());
         Page<Comentario> listaComentariosPagina = comentarioRepository.findAllByPeliculaId(idPelicula, datosPagina);
         // Convertimos la lista de comentarios al correspondiente DTO
         ComentarioDTOConverter comentarioDTOConverter = new ComentarioDTOConverter();

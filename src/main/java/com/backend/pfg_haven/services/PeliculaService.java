@@ -59,6 +59,20 @@ public class PeliculaService {
     }
 
     /**
+     * Se obtiene un listado de peliculas completo en formato mini con su id y nombre
+     *
+     * @return Lista de peliculas
+     */
+    public List<Pelicula> getAllPeliculasMini() {
+        List<Pelicula> listaPeliculas = peliculaRepository.findAll();
+        if(listaPeliculas.isEmpty()) {
+            throw new ResourceNotFoundException("No hay películas en el catálogo");
+        } else {
+            return listaPeliculas;
+        }
+    }
+
+    /**
      * Se obtiene una película por su id
      *
      * @param id Id de la película

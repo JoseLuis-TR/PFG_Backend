@@ -14,4 +14,6 @@ public class PeliculaDTOConverter {
     public PeliculaDTOConverter() { this.modelMapper = new ModelMapper(); }
 
     public PeliculaCarteleraDTO convertToCarteleraDTO(Pelicula pelicula){ return modelMapper.map(pelicula, PeliculaCarteleraDTO.class);}
+
+    public PeliculaMiniDTO convertToMiniDTO(Pelicula pelicula){ return modelMapper.map(pelicula, PeliculaMiniDTO.class);}
 }
