@@ -14,6 +14,8 @@ public interface PeliculaRepository extends JpaRepository<Pelicula, Long> {
 
     Page<Pelicula> findAll(Pageable pageable);
 
+    List<Pelicula> findAllByOrderByNombre();
+
     // Se añade una query para descartar las pelis con 0 votos
     @Query("SELECT p FROM Pelicula p WHERE p.votos > 0 ORDER BY p.votos DESC")
     List<Pelicula> findTop10ByOrderByVotosDesc();

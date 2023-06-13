@@ -64,7 +64,7 @@ public class PeliculaService {
      * @return Lista de peliculas
      */
     public List<Pelicula> getAllPeliculasMini() {
-        List<Pelicula> listaPeliculas = peliculaRepository.findAll();
+        List<Pelicula> listaPeliculas = peliculaRepository.findAllByOrderByNombre();
         if(listaPeliculas.isEmpty()) {
             throw new ResourceNotFoundException("No hay películas en el catálogo");
         } else {
@@ -184,6 +184,12 @@ public class PeliculaService {
     	Pelicula pelicula = peliculaRepository
                                 .findById(idPeliculaToUpdate)
                                 .orElseThrow(() -> new ResourceNotFoundException("No se encuentra le pelicula que quiere actualizar"));
+
+        Pelicula peliculaExiste = peliculaRepository.findByNombre(peliculaToUpdate.getNombre());
+
+        if(peliculaExiste != null && !peliculaExiste.getId().equals(idPeliculaToUpdate)) {
+            throw new EntityExistsException("Ya existe una película con ese nombre");
+        }
 
         String urlPoster = null;
         String urlCaptura = null;
