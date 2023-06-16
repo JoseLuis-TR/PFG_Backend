@@ -56,7 +56,8 @@ public class SesionService {
      * @return Lista de las sesiones a partir de hoy
      */
     public HashMap<Sesion, HashMap<String, Object>> getSessionsAfterToday() {
-        List<Sesion> sesionesDesdeHoy = sesionRepository.findByFechaGreaterThanEqualOrderByFecha(LocalDate.now());
+        ZoneId zoneId = ZoneId.of("Europe/Madrid");
+        List<Sesion> sesionesDesdeHoy = sesionRepository.findByFechaGreaterThanEqualOrderByFecha(LocalDate.now(zoneId));
         if(sesionesDesdeHoy.isEmpty()) {
             throw new ResourceNotFoundException("No hay sesiones a partir de hoy");
         }
